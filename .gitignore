@@ -1,0 +1,46 @@
+# === Java ===
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# === Maven ===
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# === IntelliJ / VSCode ===
+.idea/
+*.iml
+.vscode/
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+
+# === Git ===
+*.orig
+
+# === Spring Boot config ===
+application.properties
+application.yml
+.env
+
+# === Docker volumes ===
+/data/
+*.pid
+
+# === Keycloak realm export (sensible) ===
+/keycloak/realm-export.json
+
+# === Test reports ===
+/test-output/
+/surefire-reports/
+/jacoco.exec
+
+# === Logs ===
+*.log
+logs/
+
+# === Misc ===
+*.db
