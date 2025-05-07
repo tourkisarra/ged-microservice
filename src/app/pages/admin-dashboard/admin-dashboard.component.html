@@ -1,0 +1,21 @@
+<h1 class="text-2xl font-bold mb-6">Bienvenue, Admin</h1>
+
+<!-- Top stats cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+  <div class="bg-white p-6 rounded-lg shadow text-center">
+    <h2 class="text-gray-500 text-sm">Documents en attente</h2>
+    <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ pendingDocuments }}</p>
+  </div>
+  <div class="bg-white p-6 rounded-lg shadow text-center">
+    <h2 class="text-gray-500 text-sm">Documents validés</h2>
+    <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ validatedDocuments }}</p>
+  </div>
+  <div class="bg-white p-6 rounded-lg shadow text-center">
+    <h2 class="text-gray-500 text-sm">Documents rejetés</h2>
+    <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ rejectedDocuments }}</p>
+  </div>
+  <div class="bg-white p-6 rounded-lg shadow text-center">
+    <h2 class="text-gray-500 text-sm">Utilisateurs actifs</h2>
+    <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ activeUsers }}</p>
+  </div>
+</div>

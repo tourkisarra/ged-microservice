@@ -1,0 +1,13 @@
+/* Pour un look propre */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+input:focus {
+  outline: none;
+  border-color: #3B82F6; /* Bleu clair focus */
+}
+
+button:hover {
+  transition: all 0.3s ease;
+}

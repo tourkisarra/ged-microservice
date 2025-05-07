@@ -1,0 +1,30 @@
+<div class="flex overflow-hidden min-h-screen">
+
+  <!-- Contenu principal -->
+  <div class="flex-1 p-8 bg-gray-50 overflow-y-auto">
+    <h2 class="text-2xl font-bold text-[#0D4955] mb-6">Historique des versions du document</h2>
+
+    <table class="w-full bg-white shadow rounded-lg text-sm">
+      <thead class="bg-[#0D4955] text-white">
+        <tr>
+          <th class="p-3 text-left">Version</th>
+          <th class="p-3 text-left">Date</th>
+          <th class="p-3 text-left">Auteur</th>
+          <th class="p-3 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let version of versions" class="border-b hover:bg-gray-50">
+          <td class="p-3 font-medium text-[#0D4955]">{{ version.versionLabel }}</td>
+          <td class="p-3">{{ version.modified | date: 'dd/MM/yyyy' }}</td>
+          <td class="p-3">{{ version.author }}</td>
+          <td class="p-3 text-center">
+            <button (click)="restoreVersion(version)" class="text-blue-600 hover:underline">
+              Restaurer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
