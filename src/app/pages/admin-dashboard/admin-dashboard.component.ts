@@ -1,59 +1,83 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { NgChartsModule } from 'ng2-charts';
-import { ChartOptions } from 'chart.js';
-@Component({
-  selector: 'app-admin-dashboard',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    NgChartsModule  // ✅ Obligatoire ici !
-  ],
-  templateUrl: './admin-dashboard.component.html'
-})
+import { ChartData, ChartOptions } from 'chart.js';
 
-export class AdminDashboardComponent {
+@Component({
+  standalone: true,
+  selector: 'app-dashboard-admin',
+  templateUrl: './admin-dashboard.component.html',
+  styleUrls: ['./admin-dashboard.component.css'],
+  imports: [CommonModule, NgChartsModule]
+})
+export class DashboardAdminComponent {
 
   pendingDocuments = 12;
   validatedDocuments = 80;
   rejectedDocuments = 8;
   activeUsers = 34;
 
-  // Line Chart Data
-  lineChartData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+  lineChartDataAdmin: ChartData<'line'> = {
+    labels: ['Jan', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin'],
     datasets: [
       {
-        data: [5, 15, 10, 20, 18, 30],
         label: 'Documents validés',
-        fill: true,
+        data: [5, 10, 8, 15, 12, 20],
         tension: 0.4,
-        borderColor: '#0D4955',
-        backgroundColor: 'rgba(13, 73, 85, 0.2)',
+        borderColor: '#0D4955',  // ✅ même couleur que User Dashboard
+        backgroundColor: '#cce4e7', // ✅ remplissage doux
         pointBackgroundColor: '#0D4955',
+        fill: true,
       }
     ]
   };
 
-  lineChartOptions: ChartOptions = {
+  lineChartOptionsAdmin: ChartOptions<'line'> = {
     responsive: true,
-    maintainAspectRatio: false
+    plugins: {
+      legend: {
+        display: true,
+        labels: {
+          color: '#0D4955'
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color: '#0D4955' },
+        grid: { color: '#e2e8f0' }
+      },
+      y: {
+        ticks: { color: '#0D4955' },
+        grid: { color: '#e2e8f0' }
+      }
+    }
   };
 
-  // Pie Chart Data
-  pieChartData = {
+  pieChartDataAdmin: ChartData<'pie'> = {
     labels: ['PDF', 'Word', 'Excel', 'Images'],
-    datasets: [{
-      data: [40, 25, 20, 15],
-      backgroundColor: ['#4CAF50', '#2196F3', '#FFC107', '#FF5722'],
-    }]
+    datasets: [
+      {
+        data: [40, 30, 20, 10],
+        backgroundColor: ['#0D4955', '#D9D9D9', '#b2d8d8', '#e0e0e0'],
+        borderColor: ['white', 'white', 'white', 'white'],
+        borderWidth: 2,
+      }
+    ]
   };
 
-  pieChartOptions: ChartOptions = {
+  pieChartOptionsAdmin: ChartOptions<'pie'> = {
     responsive: true,
-    maintainAspectRatio: false
+    cutout: '70%', // ✅ Donne un effet "donut" propre
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          color: '#0D4955',
+          font: { size: 12 }
+        }
+      }
+    }
   };
 
 }

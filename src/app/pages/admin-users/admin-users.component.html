@@ -1,1 +1,139 @@
-<p>admin-users works!</p>
+<div class="min-h-screen bg-[#f8fafc] p-10">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-[#0D4955] mb-2">Gestion des Utilisateurs</h1>
+        <p class="text-gray-500">{{ users.length }} utilisateur(s)</p>
+      </div>
+  
+      <button (click)="openModal()" class="bg-[#0D4955] hover:bg-[#093645] text-white px-6 py-2 rounded-lg shadow transition mt-4 md:mt-0">
+        Ajouter un utilisateur
+      </button>
+    </div>
+  
+    <!-- Tableau -->
+    <div class="overflow-x-auto shadow rounded-lg bg-white">
+      <table class="min-w-full table-auto">
+        <thead class="bg-gray-50 text-[#0D2538]">
+          <tr>
+            <th class="p-4 text-left">Nom</th>
+            <th class="p-4 text-left">Organisation</th>
+            <th class="p-4 text-left">Rôle</th>
+            <th class="p-4 text-left">Statut</th>
+            <th class="p-4 text-left">Actions</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let user of paginatedUsers" 
+            class="border-t hover:bg-[#f0f8ff] transition-all duration-300 ease-in-out">
+  
+            <td class="p-4 flex items-center gap-3">
+              <div class="bg-[#0D4955] text-white rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold">
+                {{ getInitials(user.name) }}
+              </div>
+              <div>
+                <div class="font-semibold">{{ user.name }}</div>
+                <div class="text-gray-500 text-sm">{{ user.email }}</div>
+              </div>
+            </td>
+  
+            <td class="p-4 text-gray-700">{{ user.organization }}</td>
+  
+            <td class="p-4">
+              <span [ngClass]="{
+                'bg-[#FFA500]/20 text-[#FFA500]': user.role === 'Administrateur',
+                'bg-[#9B59B6]/20 text-[#9B59B6]': user.role === 'Utilisateur'
+              }" 
+                class="text-xs font-semibold py-1 px-3 rounded-full">
+                {{ user.role }}
+              </span>
+            </td>
+  
+            <td class="p-4 text-gray-700">{{ user.status }}</td>
+  
+            <td class="p-4 flex gap-3">
+              <button (click)="toggleStatus(user)" class="p-2 hover:bg-[#e0e7ff] rounded transition">
+                <img src="/assets/edit-icon.png" alt="Modifier" class="w-5 h-5">
+              </button>
+              <button (click)="deleteUser(user)" class="p-2 hover:bg-[#ffe0e0] rounded transition">
+                <img src="/assets/delete-icon.png" alt="Supprimer" class="w-5 h-5">
+              </button>
+            </td>
+  
+          </tr>
+        </tbody>
+      </table>
+  
+      <!-- Pagination -->
+      <div class="flex justify-center gap-2 mt-6">
+        <button *ngFor="let page of [].constructor(totalPages); let i = index"
+          (click)="goToPage(i + 1)"
+          [ngClass]="{
+            'bg-[#0D4955] text-white': currentPage === (i + 1),
+            'border hover:bg-gray-100': currentPage !== (i + 1)
+          }"
+          class="px-4 py-2 rounded-full transition">
+          {{ i + 1 }}
+        </button>
+      </div>
+  
+    </div>
+  
+    <!-- Modal Ajouter Utilisateur -->
+    <div *ngIf="showModal" class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+      <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md relative">
+  
+        <h2 class="text-2xl font-bold text-[#0D4955] mb-8 text-center">Ajouter un Utilisateur</h2>
+  
+        <form class="space-y-6" (ngSubmit)="submitForm()" #userForm="ngForm">
+  
+          <div>
+            <label class="text-gray-700 font-semibold mb-1 block">Nom</label>
+            <input type="text" [(ngModel)]="newUser.name" name="name" required
+              class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D4955]">
+          </div>
+  
+          <div>
+            <label class="text-gray-700 font-semibold mb-1 block">Email</label>
+            <input type="email" [(ngModel)]="newUser.email" name="email" required
+              class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D4955]">
+          </div>
+  
+          <div>
+            <label class="text-gray-700 font-semibold mb-1 block">Organisation</label>
+            <input type="text" [(ngModel)]="newUser.organization" name="organization" required
+              class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D4955]">
+          </div>
+  
+          <div>
+            <label class="text-gray-700 font-semibold mb-1 block">Rôle</label>
+            <select [(ngModel)]="newUser.role" name="role" required
+              class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D4955]">
+              <option value="" disabled selected>Choisir un rôle</option>
+              <option value="Administrateur">Administrateur</option>
+              <option value="Utilisateur">Utilisateur</option>
+            </select>
+          </div>
+  
+          <div class="flex justify-end gap-4 mt-8">
+            <button type="button" (click)="closeModal()" 
+              class="px-6 py-2 border rounded-md hover:bg-gray-100">
+              Annuler
+            </button>
+  
+            <button type="submit" 
+              class="px-6 py-2 bg-[#0D4955] text-white rounded-md hover:bg-[#093645] transition disabled:opacity-50"
+              [disabled]="!userForm.valid">
+              Ajouter
+            </button>
+          </div>
+  
+        </form>
+  
+      </div>
+    </div>
+  
+  </div>
+  

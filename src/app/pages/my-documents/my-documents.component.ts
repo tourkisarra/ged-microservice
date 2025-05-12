@@ -34,9 +34,9 @@ export class MyDocumentsComponent {
   }
 
   loadDummyData() {
-    const documentA = { id: '1', title: 'Document A', type: 'PDF', creator: 'Admin', createdAt: new Date('2025-04-20'), status: 'Validé' };
-    const documentB = { id: '2', title: 'Document B', type: 'Word', creator: 'User1', createdAt: new Date('2025-04-21'), status: 'Brouillon' };
-    const documentC = { id: '3', title: 'Document C', type: 'Excel', creator: 'User2', createdAt: new Date('2025-04-22'), status: 'Archivé' };
+    const documentA = { id: '1', title: 'Document A', type: 'PDF', creator: 'Admin', createdAt: new Date('2025-04-20'), status: '' };
+    const documentB = { id: '2', title: 'Document B', type: 'Word', creator: 'User1', createdAt: new Date('2025-04-21'), status: '' };
+    const documentC = { id: '3', title: 'Document C', type: 'Excel', creator: 'User2', createdAt: new Date('2025-04-22'), status: '' };
 
     this.documents = [documentA, documentB, documentC];
 
@@ -81,9 +81,10 @@ export class MyDocumentsComponent {
     this.selectedWorkspaceName = name;
   }
 
-  viewDocument(doc: any) {
-    this.router.navigate(['/document-view', doc.id]); // Navigation vers document-view
-  }
+viewDocument(doc: any) {
+  this.router.navigate(['/document-viewer', doc.id]);
+}
+
 
   downloadDocument(doc: any) {
     console.log('Téléchargement du document:', doc.title);

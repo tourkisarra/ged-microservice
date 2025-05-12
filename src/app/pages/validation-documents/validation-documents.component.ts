@@ -1,45 +1,34 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
+  standalone: true,
   selector: 'app-validation-documents',
   templateUrl: './validation-documents.component.html',
   styleUrls: ['./validation-documents.component.css'],
-  standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class ValidationDocumentsComponent {
 
   documents = [
-    { id: 'DOC001', name: 'Contrat partenaire.pdf', type: 'PDF', submittedBy: 'Sarra Tourki', date: '2025-04-30', status: 'En attente' },
-    { id: 'DOC002', name: 'Rapport financier.docx', type: 'Word', submittedBy: 'Sarra Tourki', date: '2025-04-29', status: 'En attente' },
-    { id: 'DOC003', name: 'Présentation projet.pptx', type: 'PPT', submittedBy: 'Sarra Tourki', date: '2025-04-28', status: 'En attente' }
+    { id: 1, name: 'Contrat 2025', type: 'PDF', creator: 'Sarah Tourki', created: new Date('2025-04-01') },
+    { id: 2, name: 'Rapport Financier', type: 'Excel', creator: 'Ali Slim', created: new Date('2025-04-10') },
+    { id: 3, name: 'Photo Evenement', type: 'Image', creator: 'Amira Khaldi', created: new Date('2025-04-15') },
   ];
 
-  isModalOpen = false;
-  selectedDocument: any = null;
-  actionType: 'validate' | 'reject' = 'validate';
-
-  openConfirmationModal(document: any, action: 'validate' | 'reject') {
-    this.selectedDocument = document;
-    this.actionType = action;
-    this.isModalOpen = true;
-  }
-
-  closeModal() {
-    this.isModalOpen = false;
-    this.selectedDocument = null;
-  }
-
-  confirmAction() {
-    if (this.selectedDocument) {
-      if (this.actionType === 'validate') {
-        this.selectedDocument.status = 'Validé';
-      } else if (this.actionType === 'reject') {
-        this.selectedDocument.status = 'Rejeté';
-      }
+  acceptDocument(doc: any) {
+    if (confirm(`Confirmer la validation de "${doc.name}" ?`)) {
+      this.documents = this.documents.filter(d => d.id !== doc.id);
+      alert(`Document "${doc.name}" validé ✅`);
     }
-    this.closeModal();
+  }
+
+  rejectDocument(doc: any) {
+    if (confirm(`Confirmer le rejet de "${doc.name}" ?`)) {
+      this.documents = this.documents.filter(d => d.id !== doc.id);
+      alert(`Document "${doc.name}" rejeté ❌`);
+    }
   }
 
 }

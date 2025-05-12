@@ -23,7 +23,7 @@ export class DocumentHistoryComponent implements OnInit {
   }
 
   loadHistory(): void {
-    // ⚠️ Simulation sans appel backend
+    //  Simulation sans appel backend
     this.versions = [
       { versionLabel: 'v1.0', modified: new Date('2025-06-10'), author: 'Sarra' },
       { versionLabel: 'v1.1', modified: new Date('2025-06-12'), author: 'Sarra' },
@@ -32,6 +32,6 @@ export class DocumentHistoryComponent implements OnInit {
   }
 
   restoreVersion(version: any): void {
-    alert(`✅ Version ${version.versionLabel} restaurée.`);
+    alert(`Version ${version.versionLabel} restaurée.`);
   }
 }

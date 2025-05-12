@@ -1,59 +1,81 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgChartsModule } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
 
 @Component({
-  selector: 'app-dashboard',
-  standalone: true, // ✅ standalone ok
-  templateUrl: './dashboard.component.html', // ✅ pas de imports: []
+  standalone: true,
+  selector: 'app-dashboard-user',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
+  imports: [CommonModule, NgChartsModule]
 })
-export class DashboardComponent {
+export class DashboardUserComponent {
 
   documentCount = 150;
   workspaceCount = 12;
   favoriteCount = 25;
 
-  // 📈 Graphique ligne
   lineChartData: ChartData<'line'> = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-    datasets: [{
-      label: 'Documents',
-      data: [15, 20, 10, 30, 40, 35, 50],
-      borderColor: '#0D4955',
-      backgroundColor: 'rgba(13, 73, 85, 0.3)',
-      fill: true,
-      tension: 0.4
-    }]
+    labels: ['Jan', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin'],
+    datasets: [
+      {
+        label: 'Documents',
+        data: [5, 15, 10, 20, 25, 35],
+        tension: 0.4,
+        borderColor: '#0D4955',  // ✅ couleur ligne
+        backgroundColor: '#cce4e7',  // ✅ couleur remplissage zone
+        pointBackgroundColor: '#0D4955',
+        fill: true,
+      }
+    ]
   };
 
   lineChartOptions: ChartOptions<'line'> = {
     responsive: true,
     plugins: {
-      legend: { position: 'top' }
+      legend: {
+        display: true,
+        labels: {
+          color: '#0D4955'
+        }
+      }
     },
     scales: {
-      x: {},
-      y: { beginAtZero: true }
+      x: {
+        ticks: { color: '#0D4955' },
+        grid: { color: '#e2e8f0' }
+      },
+      y: {
+        ticks: { color: '#0D4955' },
+        grid: { color: '#e2e8f0' }
+      }
     }
   };
 
-  // 🍩 Graphique doughnut
   doughnutChartData: ChartData<'doughnut'> = {
-    labels: ['PDF', 'Word', 'Excel', 'Image'],
-    datasets: [{
-      label: 'Type de Documents',
-      data: [40, 25, 20, 15],
-      backgroundColor: [
-        '#4CAF50', '#2196F3', '#FFC107', '#FF5722'
-      ],
-      hoverOffset: 10
-    }]
+    labels: ['Images', 'Documents', 'Vidéos', 'Autres'],
+    datasets: [
+      {
+        data: [40, 30, 20, 10],
+        backgroundColor: ['#0D4955', '#D9D9D9', '#b2d8d8', '#e0e0e0'],
+        borderColor: ['white', 'white', 'white', 'white'],
+        borderWidth: 2,
+      }
+    ]
   };
 
   doughnutChartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
+    cutout: '70%',
     plugins: {
-      legend: { position: 'bottom' },
-      tooltip: { enabled: true }
+      legend: {
+        position: 'top',
+        labels: {
+          color: '#0D4955',
+          font: { size: 12 }
+        }
+      }
     }
   };
 

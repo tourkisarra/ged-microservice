@@ -1,0 +1,48 @@
+<div class="p-8 bg-gray-100 min-h-screen">
+  <h1 class="text-3xl font-bold text-[#0D2538] mb-8"> Fichiers Partagés</h1>
+
+  <!-- Barre de recherche -->
+  <div class="mb-8 flex justify-between items-center">
+    <input
+      [(ngModel)]="searchTerm"
+      type="text"
+      placeholder=" Rechercher un fichier..."
+      class="px-4 py-2 w-full md:w-1/3 border rounded focus:outline-none focus:ring-2 focus:ring-[#0D4955]"
+    />
+  </div>
+
+  <!-- Grille de cartes -->
+  <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    <div *ngFor="let doc of filteredDocuments" class="bg-white rounded-lg shadow hover:shadow-lg transition p-6 flex flex-col justify-between">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="text-4xl">
+          {{ getFileIcon(doc.type) }}
+        </div>
+        <div>
+          <h2 class="text-lg font-semibold text-[#0D2538]">{{ doc.name }}</h2>
+          <p class="text-sm text-gray-500">{{ doc.type }}</p>
+        </div>
+      </div>
+
+      <div class="text-sm text-gray-600 mb-4">
+        <p>Partagé par : <span class="font-medium">{{ doc.sharedBy }}</span></p>
+        <p>Avec : <span class="font-medium">{{ doc.sharedWith }}</span></p>
+        <p>Date : <span class="font-medium">{{ doc.sharedAt | date: 'dd/MM/yyyy' }}</span></p>
+      </div>
+
+      <div class="flex gap-2 mt-auto">
+        <button (click)="downloadDocument(doc)" class="flex-1 py-2 bg-[#0D4955] text-white rounded hover:bg-[#0D2538] transition">
+          Télécharger
+        </button>
+        <button class="flex-1 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition">
+          Détail
+        </button>
+      </div>
+    </div>
+
+    <!-- Message si aucun document trouvé -->
+    <div *ngIf="filteredDocuments.length === 0" class="text-center text-gray-500 col-span-full mt-12">
+      Aucun fichier partagé trouvé.
+    </div>
+  </div>
+</div>

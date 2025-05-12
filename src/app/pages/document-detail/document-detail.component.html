@@ -1,0 +1,29 @@
+<div class="min-h-screen p-8 bg-gray-100">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow">
+      <h1 class="text-3xl font-bold text-[#0D2538] mb-6">📋 Détail du Document</h1>
+  
+      <div *ngIf="documentData; else notFound">
+        <div class="mb-6">
+          <p class="text-xl font-semibold">{{ documentData.name }}</p>
+          <p class="text-gray-500">{{ documentData.type }}</p>
+        </div>
+  
+        <div class="space-y-4">
+          <p><strong>Partagé par :</strong> {{ documentData.sharedBy }}</p>
+          <p><strong>Partagé avec :</strong> {{ documentData.sharedWith }}</p>
+          <p><strong>Date de partage :</strong> {{ documentData.sharedAt | date: 'dd/MM/yyyy' }}</p>
+          <p><strong>Description :</strong> {{ documentData.description }}</p>
+        </div>
+  
+        <div class="mt-8 flex gap-4">
+          <button class="bg-[#0D4955] text-white px-4 py-2 rounded hover:bg-[#0D2538]">Télécharger</button>
+          <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400">Retour</button>
+        </div>
+      </div>
+  
+      <ng-template #notFound>
+        <p class="text-center text-gray-500">Document introuvable.</p>
+      </ng-template>
+    </div>
+  </div>
+  

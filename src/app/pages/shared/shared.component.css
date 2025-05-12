@@ -1,0 +1,18 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 14px;
+  text-align: left;
+}
+
+th {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+td {
+  font-size: 14px;
+}

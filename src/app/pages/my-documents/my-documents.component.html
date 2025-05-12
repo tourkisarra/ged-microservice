@@ -1,6 +1,6 @@
 
   <div class="flex min-h-screen bg-gray-100 flex-col relative">
-    <!-- 🔎 Barre de recherche -->
+    <!--  Barre de recherche -->
     <div class="mx-6 mt-6 mb-2">
       <div class="bg-white p-4 rounded-lg shadow flex flex-wrap items-center gap-4">
         <div class="flex items-center gap-2 flex-1">
@@ -25,9 +25,9 @@
       </div>
     </div>
   
-    <!-- 📂 Liste Workspaces -->
+    <!-- Liste Workspaces -->
     <section class="px-6 pt-6">
-      <h2 class="text-xl font-bold text-[#0D4955] mb-4">📂 Mes Workspaces</h2>
+      <h2 class="text-xl font-bold text-[#0D4955] mb-4"> Mes Workspaces</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div *ngFor="let workspace of workspaces"
           class="bg-white rounded-xl shadow p-6 hover:shadow-lg cursor-pointer transition"
@@ -38,10 +38,10 @@
       </div>
     </section>
   
-    <!-- 📄 Liste Documents -->
+    <!--  Liste Documents -->
     <section class="px-6 py-6">
       <h2 class="text-xl font-bold text-[#0D4955] mb-4">
-        📄 Documents {{ selectedWorkspaceName ? 'dans ' + selectedWorkspaceName : 'Récents' }}
+         Documents {{ selectedWorkspaceName ? 'dans ' + selectedWorkspaceName : 'Récents' }}
       </h2>
       <div class="bg-white rounded-lg shadow overflow-x-auto">
         <table class="min-w-full text-sm">
@@ -80,90 +80,125 @@
       </div>
     </section>
     
- <!-- ➕ Floating Speed Dial Button moderne -->
- <div class="fixed bottom-8 right-8 flex flex-col items-end space-y-4 z-50">
+    <div class="fixed bottom-8 right-8 flex flex-col items-end space-y-4 z-50">
 
-  <!-- Speed Dial Items (avec animation individuelle) -->
-  <div *ngIf="isFloatingMenuOpen" class="flex flex-col items-end space-y-4 mb-4">
-
-    <!-- Action: Uploader un Document -->
-    <div class="flex items-center opacity-0 animate-fade-slide animate-delay-100">
-      <span class="bg-black text-white text-xs rounded-md px-2 py-1 mr-2">Uploader un Document</span>
-      <button (click)="openUploadModal()" class="bg-green-500 hover:bg-green-600 p-3 rounded-full shadow-lg">
-        <i class="fas fa-upload text-white"></i>
+      <!-- Speed Dial Items -->
+      <div *ngIf="isFloatingMenuOpen" class="flex flex-col items-end space-y-4 mb-4">
+    
+        <!-- Action: Uploader un Document -->
+        <div class="flex items-center opacity-0 animate-fade-slide animate-delay-100">
+          <span class="bg-[#374151] text-white text-xs rounded-md px-2 py-1 mr-2 shadow-sm">Uploader un Document</span>
+          <button (click)="openUploadModal()" class="bg-[#3B82F6] hover:bg-[#2563EB] p-3 rounded-full shadow-lg transition">
+            <i class="fas fa-upload text-white"></i>
+          </button>
+        </div>
+    
+        <!-- Action: Créer un Workspace -->
+        <div class="flex items-center opacity-0 animate-fade-slide animate-delay-200">
+          <span class="bg-[#374151] text-white text-xs rounded-md px-2 py-1 mr-2 shadow-sm">Créer un Workspace</span>
+          <button (click)="openCreateWorkspaceModal()" class="bg-[#2563EB] hover:bg-[#059669] p-3 rounded-full shadow-lg transition">
+            <i class="fas fa-folder-plus text-white"></i>
+          </button>
+        </div>
+    
+      </div>
+    
+      <!-- FAB principal -->
+      <button (click)="toggleFloatingMenu()" class="bg-[#1F2937] hover:bg-[#111827] p-4 rounded-full shadow-lg focus:outline-none transition">
+        <i class="fas fa-plus text-white"></i>
       </button>
     </div>
+    
 
-    <!-- Action: Créer un Workspace -->
-    <div class="flex items-center opacity-0 animate-fade-slide animate-delay-200">
-      <span class="bg-black text-white text-xs rounded-md px-2 py-1 mr-2">Créer un Workspace</span>
-      <button (click)="openCreateWorkspaceModal()" class="bg-purple-500 hover:bg-purple-600 p-3 rounded-full shadow-lg">
-        <i class="fas fa-folder-plus text-white"></i>
-      </button>
-    </div>
-
-  </div>
-
-  <!-- Bouton principal (+) -->
-  <button (click)="toggleFloatingMenu()" class="bg-blue-600 hover:bg-blue-700 p-4 rounded-full shadow-lg focus:outline-none">
-    <i class="fas fa-plus text-white"></i>
-  </button>
-
-</div>
 
   
   
-  <!-- 📥 Modal Upload Document -->
+  <!--  Modal Upload Document -->
   <div *ngIf="isUploadModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-2xl space-y-6">
-      <h2 class="text-2xl font-bold text-[#0D4955] text-center">Uploader un nouveau document</h2>
-      <form class="space-y-6">
+  
+      <h2 class="text-2xl font-bold text-[#0D4955] text-center">Uploader un document </h2>
+  
+      <form class="space-y-6" (ngSubmit)="uploadDocument()" enctype="multipart/form-data">
+  
+        <!-- Titre du document -->
         <div>
           <label class="block text-sm font-semibold text-gray-700 mb-1 uppercase">Titre du document</label>
-          <input type="text" [(ngModel)]="newDocumentTitle" name="documentTitle"
-            placeholder="Ex: Rapport financier Q1"
-            class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D4955] bg-gray-50">
+          <input type="text" [(ngModel)]="newDocumentTitle" name="title"
+            placeholder="Ex: Rapport d'activité"
+            class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D4955] bg-gray-50" required>
         </div>
-
+  
+        <!-- Sélection du workspace -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1 uppercase">Type de Document</label>
-          <select [(ngModel)]="newDocumentType" name="documentType"
-            class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D4955] bg-gray-50">
-            <option value="">Sélectionner un type</option>
-            <option value="PDF">PDF</option>
-            <option value="Word">Word</option>
-            <option value="Excel">Excel</option>
-            <option value="Image">Image</option>
-          </select>
-        </div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1 uppercase">Nom du workspace</label>
+          <input type="text" [(ngModel)]="newWorkspaceName" name="workspace"
+              placeholder="Nom du workspace (ex: RH, Finances)"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0D4955]">
 
+        </div>
+  
+        <!-- Zone de drop file stylisée -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1 uppercase">Upload du fichier</label>
-          <input type="file" (change)="onFileSelected($event)"
-            class="w-full p-4 border-2 border-dashed border-[#0D4955] rounded-lg bg-[#f0fafa] cursor-pointer">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase">Fichier à uploader</label>
+          <label
+            for="upload"
+            class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-[#0D4955] rounded-lg cursor-pointer bg-[#f0fafa] hover:bg-[#e6f0f0] transition">
+            <i class="fas fa-cloud-upload-alt text-4xl text-[#0D4955] mb-2"></i>
+            <span class="text-sm text-gray-500">Cliquez pour choisir un fichier</span>
+            <input id="upload" type="file" (change)="onFileSelected($event)" hidden required>
+          </label>
+          <p *ngIf="selectedFile" class="text-sm mt-2 text-gray-700">📄 {{ selectedFile?.name }}</p>
         </div>
-
+  
+        <!-- Actions -->
         <div class="flex justify-between pt-4">
-          <button type="button" (click)="closeModals()"
-            class="px-6 py-3 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition">Annuler</button>
-          <button type="submit" (click)="uploadDocument()"
-            class="px-6 py-3 bg-[#0D4955] text-white rounded-md hover:bg-[#0a3b45] font-semibold transition">Uploader</button>
+          <button type="button" (click)="closeModals()" class="px-6 py-3 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition">Annuler</button>
+          <button type="submit" class="px-6 py-3 bg-[#0D4955] text-white rounded-md hover:bg-[#0a3b45] font-semibold transition">
+            Uploader
+          </button>
         </div>
       </form>
     </div>
   </div>
-
-  <!-- 📂 Modal Create Workspace -->
+  
+  <!--  Modal Create Workspace -->
   <div *ngIf="isCreateWorkspaceModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg p-8 w-96">
-      <h3 class="text-lg font-bold mb-4 text-[#0D4955]">Créer un Workspace</h3>
-      <input type="text" [(ngModel)]="newWorkspaceName" placeholder="Nom du Workspace"
-        class="w-full mb-4 px-4 py-2 border border-gray-300 rounded-md">
-      <div class="flex justify-end gap-4">
-        <button (click)="closeModals()" class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">Annuler</button>
-        <button (click)="createWorkspace()" class="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600">Créer</button>
+    <div class="bg-white rounded-2xl p-8 w-full max-w-md shadow-xl">
+  
+      <!-- Titre + icône -->
+      <div class="text-center mb-6">
+        <div class="flex justify-center mb-2">
+          <div class="bg-[#0D4955] p-3 rounded-full shadow-md">
+            <i class="fas fa-folder-plus text-white text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-2xl font-bold text-[#0D4955]">Créer un nouveau Workspace</h3>
+        <p class="text-sm text-gray-500 mt-1">Organisez vos documents par catégorie ou projet</p>
       </div>
+  
+      <!-- Champ Nom -->
+      <div class="mb-6">
+        <label class="block text-sm font-semibold text-gray-700 mb-1 uppercase">Nom du workspace</label>
+        <input type="text" [(ngModel)]="newWorkspaceName" placeholder="Ex : RH, Finances, Technique"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0D4955]">
+      </div>
+      <div class="mb-6">
+        <label class="block text-sm font-semibold text-gray-700 mb-1 uppercase">description </label>
+        <input type="text" [(ngModel)]="newWorkspaceName" placeholder=""
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0D4955]">
+      </div>
+  
+      <!-- Boutons -->
+      <div class="flex justify-between pt-4">
+        <button type="button" (click)="closeModals()" class="px-6 py-3 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition">Annuler</button>
+        <button type="submit" class="px-6 py-3 bg-[#0D4955] text-white rounded-md hover:bg-[#0a3b45] font-semibold transition">
+          Créer
+        </button>
+      </div>
+  
     </div>
   </div>
+  
 
 </div>

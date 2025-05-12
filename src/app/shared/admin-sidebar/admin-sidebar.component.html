@@ -1,23 +1,36 @@
-<aside class="w-64 bg-white border-r flex flex-col justify-between h-screen shadow">
-    <div>
-      <!-- Logo -->
-      <div class="p-6 flex items-center justify-center">
-        <img src="/assets/oga.png" alt="One Gate Africa" class="h-20" />
-      </div>  
-      <!-- Menu de navigation Admin -->
-      <nav class="flex flex-col space-y-6 px-6 text-[#0D2538] font-semibold">
-        <a routerLink="/admin/dashboard" routerLinkActive="text-[#0D4955]" class="hover:text-[#0D4955]"> Tableau de bord</a>
-        <a routerLink="/admin/validate-documents" routerLinkActive="text-[#0D4955]" class="hover:text-[#0D4955]"> Validation Documents</a>
-        <a routerLink="/admin/users" routerLinkActive="text-[#0D4955]" class="hover:text-[#0D4955]">Gestion Utilisateurs</a>
-        <a routerLink="/admin/statistics" routerLinkActive="text-[#0D4955]" class="hover:text-[#0D4955]"></a>
-        <a routerLink="/admin/settings" routerLinkActive="text-[#0D4955]" class="hover:text-[#0D4955]"> </a>
-      </nav>
-    </div>
-    <!-- Déconnexion -->
-    <<div class="relative mt-12 h-32">  <!-- Parent en `relative` pour contenir l'élément absolu -->
-      <button class="absolute bottom-8 right-11 px-11 py-2 border border-[#0D4955] text-[#0D4955] rounded-md hover:bg-[#0D4955]/10">
-        Déconnexion
-      </button>
-    </div>
-  </aside>
+<aside class="w-64 bg-white border-r flex flex-col justify-between h-screen shadow-sm">
+
+  <!-- Logo -->
+  <div class="p-6 flex justify-center">
+    <img src="/assets/oga.png" alt="One Gate Africa" class="h-16" />
+  </div>
+
+  <!-- Menu Admin -->
+  <nav class="flex-1 flex flex-col gap-2 px-4">
+    <a routerLink="/admin/dashboard" routerLinkActive="bg-[#0D4955]/10 text-[#0D4955]" 
+      class="py-3 px-4 rounded-md hover:bg-[#0D4955]/10 text-[#0D2538] font-semibold transition">
+      Tableau de bord
+    </a>
+
+    <a routerLink="/admin/validate-documents" routerLinkActive="bg-[#0D4955]/10 text-[#0D4955]"
+      class="py-3 px-4 rounded-md hover:bg-[#0D4955]/10 text-[#0D2538] font-semibold transition">
+      Validation Documents
+    </a>
+
+    <a routerLink="/admin/users" routerLinkActive="bg-[#0D4955]/10 text-[#0D4955]" 
+      class="py-3 px-4 rounded-md hover:bg-[#0D4955]/10 text-[#0D2538] font-semibold transition">
+      Gestion Utilisateurs
+    </a>
+
   
+    
+  </nav>
+
+  <!-- Déconnexion -->
+  <div class="p-6">
+    <button class="w-full py-3 border border-[#0D4955] text-[#0D4955] rounded-md hover:bg-[#0D4955]/10 transition font-semibold">
+      Déconnexion
+    </button>
+  </div>
+
+</aside>

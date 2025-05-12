@@ -1,22 +1,44 @@
-<aside class="w-64 bg-white border-r flex flex-col justify-between h-screen shadow">
-  <div>
-    <div class="p-6 flex items-center justify-center">
-      <img src="/assets/oga.png" alt="One Gate Africa" class="h-20" />
-    </div>
-    <nav class="flex flex-col space-y-6 px-6 text-[#0D2538] font-semibold">
-      <a routerLink="/dashboard" routerLinkActive="text-[#0D4955]" class="hover:text-[#0D4955]"> Mon Espace GED</a>
-      <a routerLink="/my-documents" routerLinkActive="text-[#0D4955]" class="hover:text-[#0D4955]"> Mes Documents</a>
+<aside class="w-64 bg-white border-r flex flex-col justify-between h-screen shadow-sm">
 
-      <a routerLink="/favoris" routerLinkActive="text-[#0D4955]" class="hover:text-[#0D4955]"> Favoris</a>
-      <a routerLink="/fichiers-partages" routerLinkActive="text-[#0D4955]" class="hover:text-[#0D4955]"> Fichiers Partagés</a>
-      <a routerLink="/statistics" routerLinkActive="text-[#0D4955]" class="hover:text-[#0D4955]"> Statistiques</a>
-      <a routerLink="/corbeille" routerLinkActive="text-[#0D4955]" class="hover:text-[#0D4955]">Corbeille</a>
-
-    </nav>
+  <!-- Logo -->
+  <div class="p-6 flex justify-center">
+    <img src="/assets/oga.png" alt="One Gate Africa" class="h-16" />
   </div>
-  <div class="relative mt-12 h-32">  <!-- Parent en `relative` pour contenir l'élément absolu -->
-    <button class="absolute bottom-8 right-11 px-11 py-2 border border-[#0D4955] text-[#0D4955] rounded-md hover:bg-[#0D4955]/10">
+
+  <!-- Menu Utilisateur -->
+  <nav class="flex-1 flex flex-col gap-2 px-4">
+    <a routerLink="/dashboard" routerLinkActive="bg-[#0D4955]/10 text-[#0D4955]" 
+      class="py-3 px-4 rounded-md hover:bg-[#0D4955]/10 text-[#0D2538] font-semibold transition">
+      Mon Espace GED
+    </a>
+
+    <a routerLink="/my-documents" routerLinkActive="bg-[#0D4955]/10 text-[#0D4955]"
+      class="py-3 px-4 rounded-md hover:bg-[#0D4955]/10 text-[#0D2538] font-semibold transition">
+      Mes Documents
+    </a>
+
+    <a routerLink="/favoris" routerLinkActive="bg-[#0D4955]/10 text-[#0D4955]" 
+      class="py-3 px-4 rounded-md hover:bg-[#0D4955]/10 text-[#0D2538] font-semibold transition">
+      Favoris
+    </a>
+
+    <a routerLink="/shared-documents" routerLinkActive="bg-[#0D4955]/10 text-[#0D4955]" 
+      class="py-3 px-4 rounded-md hover:bg-[#0D4955]/10 text-[#0D2538] font-semibold transition">
+      Fichiers Partagés
+    </a>
+
+    
+    <a routerLink="/trash" routerLinkActive="bg-[#0D4955]/10 text-[#0D4955]" 
+      class="py-3 px-4 rounded-md hover:bg-[#0D4955]/10 text-[#0D2538] font-semibold transition">
+      Corbeille
+    </a>
+  </nav>
+
+  <!-- Déconnexion -->
+  <div class="p-6">
+    <button class="w-full py-3 border border-[#0D4955] text-[#0D4955] rounded-md hover:bg-[#0D4955]/10 transition font-semibold">
       Déconnexion
     </button>
   </div>
+
 </aside>

@@ -1,28 +1,47 @@
 <div class="flex min-h-screen bg-[#f8fafc]">
   <main class="flex-1 p-8 space-y-8">
-    <h1 class="text-3xl font-bold text-[#0D4955] mb-6">Tableau de bord</h1>
+    <h1 class="text-3xl font-bold text-[#0D4955] mb-6 animate__animated animate__fadeInDown">Bienvenue sur votre espace GED</h1>
 
     <!-- Cartes -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-white rounded-lg shadow p-6 text-center">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 animate__animated animate__fadeInUp">
+      <div class="bg-white rounded-xl shadow hover:shadow-md transition p-6 text-center">
         <h2 class="text-gray-500 text-sm">Documents</h2>
-        <p class="text-3xl font-bold text-[#0D4955]">{{ documentCount }}</p>
+        <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ documentCount }}</p>
       </div>
-      <div class="bg-white rounded-lg shadow p-6 text-center">
+      <div class="bg-white rounded-xl shadow hover:shadow-md transition p-6 text-center">
         <h2 class="text-gray-500 text-sm">Workspaces</h2>
-        <p class="text-3xl font-bold text-[#0D4955]">{{ workspaceCount }}</p>
+        <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ workspaceCount }}</p>
       </div>
-      <div class="bg-white rounded-lg shadow p-6 text-center">
+      <div class="bg-white rounded-xl shadow hover:shadow-md transition p-6 text-center">
         <h2 class="text-gray-500 text-sm">Favoris</h2>
-        <p class="text-3xl font-bold text-[#0D4955]">{{ favoriteCount }}</p>
+        <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ favoriteCount }}</p>
       </div>
     </div>
 
     <!-- Graphiques -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      
-      
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 animate__animated animate__fadeInUp">
+      <!-- Documents par Mois -->
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="text-lg font-semibold text-[#0D4955] mb-4">Documents ajoutés par mois</h3>
+        <canvas baseChart
+          [data]="lineChartData"
+          [options]="lineChartOptions"
+          [type]="'line'">
+        </canvas>
+      </div>
 
+      <!-- Documents par Type -->
+      <div class="bg-white p-6 rounded-xl shadow flex flex-col items-center justify-center">
+        <h3 class="text-lg font-semibold text-[#0D4955] mb-4">Répartition des documents</h3>
+        <div class="w-[250px] h-[250px]">
+          <canvas baseChart
+            [data]="doughnutChartData"
+            [options]="doughnutChartOptions"
+            [type]="'doughnut'">
+          </canvas>
+        </div>
+      </div>
     </div>
+
   </main>
 </div>

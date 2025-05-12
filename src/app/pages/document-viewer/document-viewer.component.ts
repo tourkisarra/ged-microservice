@@ -1,65 +1,45 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
-interface Document {
-  id: string;
-  title: string;
-  description: string;
-  creator: string;
-  fileSize: string;
-  createdAt: Date;
-  lastModified: Date;
-  type: 'Document' | 'Image' | 'Video' | 'Other';
-  isSigned: boolean; // ➔ Ajout de champ signature
-}
+import { Router } from '@angular/router';
+import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-document-viewer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SidebarComponent],
   templateUrl: './document-viewer.component.html',
   styleUrls: ['./document-viewer.component.css']
 })
 export class DocumentViewerComponent {
-  document!: Document;
+  document = {
+    id: 'DOC-001',
+    title: 'Contrat de prestation',
+    creator: 'Sarra Tourki',
+    createdAt: new Date('2024-12-10'),
+    lastModified: new Date('2025-01-05'),
+    type: 'PDF',
+    fileSize: '1.4 Mo',
+    description: 'Document de contrat pour la mission de développement.',
+    isSigned: false
+  };
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-    const id = this.route.snapshot.paramMap.get('id');
-    // Simulation de document
-    this.document = {
-      id: id || 'DOC001',
-      title: 'MockupWeb-2.jpg',
-      description: 'Image UI/UX design',
-      creator: 'Sarra Tourki',
-      fileSize: '2.5 MB',
-      createdAt: new Date('2025-06-18'),
-      lastModified: new Date('2025-06-20'),
-      type: 'Image',
-      isSigned: false // initialement pas signé
-    };
-  }
+  constructor(private router: Router) {}
 
   goBack(): void {
-    this.router.navigate(['/my-documents']);
+    this.router.navigate(['/document-history']); // adapte selon ta route exacte
   }
 
   downloadDocument(): void {
-    alert(`📥 Téléchargement de : ${this.document.title}`);
-    // 🔄 À connecter plus tard avec API backend
+    alert('📥 Téléchargement du document...');
+    // Ici tu peux implémenter un vrai téléchargement via blob si besoin
   }
 
   addToFavorites(): void {
-    alert(`❤️ ${this.document.title} ajouté aux favoris`);
-    // 🔄 À connecter plus tard avec backend ou stockage local
+    alert('💖 Document ajouté aux favoris !');
   }
 
-  // ➡️ Signer électroniquement
   signDocument(): void {
-    const confirmed = confirm('✅ Voulez-vous signer électroniquement ce document ?');
-    if (confirmed) {
-      this.document.isSigned = true;
-      alert(`🖋️ Document "${this.document.title}" signé avec succès !`);
-    }
+    this.document.isSigned = true;
+    alert('🖋️ Document signé électroniquement.');
   }
 }

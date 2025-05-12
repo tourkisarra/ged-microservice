@@ -1,21 +1,53 @@
-<h1 class="text-2xl font-bold mb-6">Bienvenue, Admin</h1>
+<div class="flex min-h-screen bg-[#f8fafc]">
+  <main class="flex-1 p-8 space-y-8">
+    <h1 class="text-3xl font-bold text-[#0D4955] mb-6 animate__animated animate__fadeInDown">Bienvenue, Admin</h1>
 
-<!-- Top stats cards -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-  <div class="bg-white p-6 rounded-lg shadow text-center">
-    <h2 class="text-gray-500 text-sm">Documents en attente</h2>
-    <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ pendingDocuments }}</p>
-  </div>
-  <div class="bg-white p-6 rounded-lg shadow text-center">
-    <h2 class="text-gray-500 text-sm">Documents validés</h2>
-    <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ validatedDocuments }}</p>
-  </div>
-  <div class="bg-white p-6 rounded-lg shadow text-center">
-    <h2 class="text-gray-500 text-sm">Documents rejetés</h2>
-    <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ rejectedDocuments }}</p>
-  </div>
-  <div class="bg-white p-6 rounded-lg shadow text-center">
-    <h2 class="text-gray-500 text-sm">Utilisateurs actifs</h2>
-    <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ activeUsers }}</p>
-  </div>
+    <!-- Top stats cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 animate__animated animate__fadeInUp">
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition text-center">
+        <h2 class="text-gray-500 text-sm">Documents en attente</h2>
+        <p class="text-3xl font-bold text-[#FFA500] mt-2">{{ pendingDocuments }}</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition text-center">
+        <h2 class="text-gray-500 text-sm">Documents validés</h2>
+        <p class="text-3xl font-bold text-[#0D4955] mt-2">{{ validatedDocuments }}</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition text-center">
+        <h2 class="text-gray-500 text-sm">Documents rejetés</h2>
+        <p class="text-3xl font-bold text-red-500 mt-2">{{ rejectedDocuments }}</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition text-center">
+        <h2 class="text-gray-500 text-sm">Utilisateurs actifs</h2>
+        <p class="text-3xl font-bold text-green-600 mt-2">{{ activeUsers }}</p>
+      </div>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 animate__animated animate__fadeInUp">
+      
+      <!-- Evolution Documents -->
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="text-lg font-semibold text-[#0D4955] mb-4">Évolution des Documents</h3>
+        <canvas baseChart
+          [data]="lineChartDataAdmin"
+          [options]="lineChartOptionsAdmin"
+          [type]="'line'">
+        </canvas>
+      </div>
+
+      <!-- Répartition par Type -->
+      <div class="bg-white p-6 rounded-xl shadow flex flex-col items-center justify-center">
+        <h3 class="text-lg font-semibold text-[#0D4955] mb-4">Répartition par Type</h3>
+        <div class="w-[250px] h-[250px]">
+          <canvas baseChart
+            [data]="pieChartDataAdmin"
+            [options]="pieChartOptionsAdmin"
+            [type]="'pie'">
+          </canvas>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
 </div>

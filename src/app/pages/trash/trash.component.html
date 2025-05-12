@@ -1,0 +1,59 @@
+<div class="min-h-screen bg-[#f8fafc] p-10">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row justify-between items-center mb-10">
+    <div class="text-center md:text-left">
+      <h1 class="text-4xl font-bold text-[#0D4955] mb-2">Documents supprimés</h1>
+      <p class="text-gray-500">{{ trashedDocuments.length }} document(s) supprimé(s)</p>
+    </div>
+
+    <div class="mt-4 md:mt-0">
+      <button (click)="emptyTrash()"
+        class="bg-[#F18D79] hover:bg-[#E5674C] text-white font-semibold px-6 py-2 rounded-lg shadow transition">
+        Vider la corbeille
+      </button>
+    </div>
+  </div>
+
+  <!-- Documents -->
+  <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    <div *ngFor="let doc of trashedDocuments"
+      class="relative group bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition">
+
+      <!-- Contenu -->
+      <div class="flex items-center gap-4 mb-6">
+        <div class="text-5xl">{{ getFileIcon(doc.type) }}</div>
+        <div>
+          <h2 class="text-lg font-semibold text-[#0D2538]">{{ doc.name }}</h2>
+          <p class="text-sm text-gray-400 capitalize">{{ doc.type }}</p>
+        </div>
+      </div>
+
+      <div class="text-gray-400 text-sm mb-6">
+        Supprimé le : {{ doc.deletedAt | date:'dd/MM/yyyy' }}
+      </div>
+
+      <!-- Actions -->
+      <div
+        class="absolute inset-0 bg-white/90 opacity-0 group-hover:opacity-100 flex flex-col justify-center items-center gap-3 rounded-xl transition">
+        <button (click)="restoreDocument(doc)"
+          class="w-40 py-2 bg-[#0D4955] hover:bg-[#093645] text-white rounded-lg transition font-semibold">
+          Restaurer
+        </button>
+        <button (click)="deletePermanently(doc)"
+          class="w-40 py-2 bg-[#F18D79] hover:bg-[#E5674C] text-white rounded-lg transition font-semibold">
+          Supprimer
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Aucun document -->
+    <div *ngIf="trashedDocuments.length === 0" class="col-span-full flex flex-col justify-center items-center mt-20">
+      <div class="text-6xl mb-4">🧹</div>
+      <p class="text-2xl text-gray-500">La corbeille est vide !</p>
+    </div>
+
+  </div>
+
+</div>

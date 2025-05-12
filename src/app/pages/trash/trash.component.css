@@ -1,0 +1,11 @@
+/* Pour ajuster le design un peu plus clean */
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+  }
+  
