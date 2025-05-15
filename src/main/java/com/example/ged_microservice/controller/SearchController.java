@@ -1,44 +1,55 @@
 package com.example.ged_microservice.controller;
 
-import com.example.ged_microservice.model.IndexedDocument;
-import com.example.ged_microservice.service.ElasticsearchService;
+import com.example.ged_microservice.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/es")
-public class ElasticsearchController {
+@RequestMapping("/api/search")
+public class SearchController {
 
     @Autowired
-    private ElasticsearchService service;
+    private SearchService searchService;
 
-    // 📥 Indexer un document
-    @PostMapping("/index")
-    public ResponseEntity<IndexedDocument> indexDocument(@RequestBody IndexedDocument doc) {
-        return ResponseEntity.ok(service.indexDocument(doc));
+    // 🔍 Recherche intelligente multi-critères
+    @GetMapping
+    public ResponseEntity<?> search(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String date,
+            @RequestParam(required = false) String workspace,
+            @RequestParam(required = false) String status,
+
+            @RequestParam(required = false) String username
+    ) {
+        try {
+            List<Map<String, Object>> results = searchService.searchDocuments(keyword, type, date, workspace,status, username);
+            return ResponseEntity.ok(results);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Erreur de recherche : " + e.getMessage());
+        }
     }
 
-    // 🔍 Recherche par mot-clé
-    @GetMapping("/search")
-    public ResponseEntity<List<IndexedDocument>> search(@RequestParam String keyword) {
-        return ResponseEntity.ok(service.search(keyword));
+    // 💡 Suggestions automatiques (autocomplete)
+    @GetMapping("/suggest")
+    public ResponseEntity<?> suggest(@RequestParam String keyword) {
+        try {
+            List<String> suggestions = searchService.getSuggestions(keyword);
+            return ResponseEntity.ok(suggestions);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Erreur de suggestion : " + e.getMessage());
+        }
     }
 
-    // ❌ Supprimer par ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
-        service.deleteById(id);
-        return ResponseEntity.ok().build();
+    // 📜 Historique utilisateur
+    @GetMapping("/history")
+    public ResponseEntity<?> history(@RequestParam String username) {
+        List<String> history = searchService.getSearchHistory(username);
+        return ResponseEntity.ok(history);
     }
-
-    // 🔎 Trouver par ID
-    @GetMapping("/{id}")
-    public ResponseEntity<IndexedDocument> findById(@PathVariable String id) {
-        return service.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-}
+} //

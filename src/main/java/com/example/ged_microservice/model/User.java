@@ -1,9 +1,13 @@
 package com.example.ged_microservice.model;
 
-import jakarta.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 
 @Entity
 public class User {
+
     @Id
     private String username; // Peut être aussi un email
 
@@ -11,10 +15,14 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-    // Getters et Setters
 
+    // Getters et Setters
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFullName() {
@@ -31,9 +39,5 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 }

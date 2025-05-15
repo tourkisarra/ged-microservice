@@ -1,44 +1,54 @@
 package com.example.ged_microservice.service;
 
 import com.example.ged_microservice.config.NuxeoWebClientConfig;
+import com.example.ged_microservice.dto.DocumentDto;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class NuxeoService {
-    @Autowired
-    private NuxeoWebClientConfig config;
 
+    private final NuxeoWebClientConfig config;
+
+    /**
+     * Créer un document vide dans Nuxeo sous un chemin donné.
+     */
     public String createDocument(String parentPath, String title) {
-        String json = String.format("""
-            {
-              "entity-type": "document",
-              "name": "%s",
-              "type": "File",
-              "properties": {
-                "dc:title": "%s"
-              }
-            }
-            """, title.replace(" ", "_"), title);
+        try {
+            String name = title.replace(" ", "_");
+            String json = "{" +
+                    "\"entity-type\": \"document\"," +
+                    "\"name\": \"" + name + "\"," +
+                    "\"type\": \"File\"," +
+                    "\"properties\": {\"dc:title\": \"" + title + "\"}" +
+                    "}";
 
-        return config.getWebClient()
-                .post()
-                .uri("/path/" + parentPath)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(json)
-                .retrieve()
-                .bodyToMono(String.class)
-                .onErrorResume(e -> Mono.just("Erreur WebClient : " + e.getMessage()))
-                .block();
+            return config.getWebClient()
+                    .post()
+                    .uri("/path/" + parentPath)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(json)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur création document : " + e.getMessage());
+        }
     }
 
+    /**
+     * Récupérer les détails d'un document par son ID.
+     */
     public Mono<String> getDocument(String id) {
         return config.getWebClient()
                 .get()
@@ -47,58 +57,72 @@ public class NuxeoService {
                 .bodyToMono(String.class);
     }
 
-
+    /**
+     * Lister tous les enfants d'un dossier donné.
+     */
     public String listChildren(String parentPath) {
-        return config.getWebClient()
-                .get()
-                .uri("/path/" + parentPath + "/@children")
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
-
-    public String deleteDocument(String id) {
-        return config.getWebClient()
-                .delete()
-                .uri("/id/" + id)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
-    private String extractIdFromJson(String json) {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode node = mapper.readTree(json);
-            return node.get("uid").asText(); // Récupère "uid"
+            return config.getWebClient()
+                    .get()
+                    .uri("/path/" + parentPath + "/@children")
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
         } catch (Exception e) {
-            throw new RuntimeException("Erreur parsing JSON : " + json);
+            throw new RuntimeException("Erreur listing children : " + e.getMessage());
         }
     }
-    public String searchDocuments(String keyword) {
-        String query = String.format("SELECT * FROM Document WHERE ecm:fulltext = '%s'", keyword);
-        return config.getWebClient()
-                .post()
-                .uri("/query")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue("{\"params\": {\"query\": \"" + query + "\"}}")
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+
+    /**
+     * Supprimer un document par son ID.
+     */
+    public String deleteDocument(String id) {
+        try {
+            return config.getWebClient()
+                    .delete()
+                    .uri("/id/" + id)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur suppression document : " + e.getMessage());
+        }
     }
 
+    /**
+     * Effectuer une recherche full-text dans Nuxeo.
+     */
+    public String searchDocuments(String keyword) {
+        try {
+            String query = String.format("SELECT * FROM Document WHERE ecm:fulltext = '%s'", keyword);
+            String body = "{ \"params\": { \"query\": \"" + query + "\" } }";
+
+            return config.getWebClient()
+                    .post()
+                    .uri("/query")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(body)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur recherche documents : " + e.getMessage());
+        }
+    }
+
+    /**
+     * Uploader un fichier dans Nuxeo.
+     */
     public String uploadFile(MultipartFile file, String parentPath, String title) {
         try {
-            // Étape 1 – Créer un document vide dans Nuxeo
-            String json = String.format("""
-            {
-              "entity-type": "document",
-              "name": "%s",
-              "type": "File",
-              "properties": {
-                "dc:title": "%s"
-              }
-            }
-        """, title.replace(" ", "_"), title);
+            // 1. Créer un document vide
+            String name = title.replace(" ", "_");
+            String json = "{" +
+                    "\"entity-type\": \"document\"," +
+                    "\"name\": \"" + name + "\"," +
+                    "\"type\": \"File\"," +
+                    "\"properties\": {\"dc:title\": \"" + title + "\"}" +
+                    "}";
 
             String createDocResponse = config.getWebClient()
                     .post()
@@ -109,34 +133,36 @@ public class NuxeoService {
                     .bodyToMono(String.class)
                     .block();
 
-            // Étape 2 – Récupération de l'ID du document Nuxeo
+            // 2. Extraire l'ID du document créé
             String documentId = extractIdFromJson(createDocResponse);
 
-            // Étape 3 – Upload du blob (le fichier réel)
-            String uploadResponse = config.getWebClient()
+            // 3. Uploader le contenu réel (blob)
+            config.getWebClient()
                     .put()
                     .uri("/id/" + documentId + "/@blob/file:content")
                     .contentType(MediaType.MULTIPART_FORM_DATA)
-                    .bodyValue(file.getResource())
+                    .body(BodyInserters.fromMultipartData("file", file.getResource()))
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
 
-            // Étape 4 – Indexation dans Elasticsearch
-           // IndexedDocument indexedDoc = new IndexedDocument();
-            //indexedDoc.setId(documentId);
-            //indexedDoc.setTitle(title);
-            //indexedDoc.setDescription("Fichier uploadé via Nuxeo");
-            //indexedDoc.setUploadDate(LocalDateTime.now().toString());
-
-            //elasticsearchService.indexDocument(indexedDoc);
-
-            return " Fichier uploadé avec succès et indexé : " + documentId;
+            return " Fichier uploadé avec succès : " + documentId;
 
         } catch (Exception e) {
-            return " Erreur upload : " + e.getMessage();
+            throw new RuntimeException("Erreur upload fichier : " + e.getMessage());
         }
     }
 
-
+    /**
+     * Extraire l'UID du document depuis la réponse JSON de création.
+     */
+    private String extractIdFromJson(String json) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode node = mapper.readTree(json);
+            return node.get("uid").asText();
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur parsing JSON : " + json);
+        }
+    }
 }

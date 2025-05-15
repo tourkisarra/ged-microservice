@@ -18,6 +18,7 @@ services:
       - ./data/postgres-ged:/var/lib/postgresql/data
     networks:
       - ged-network
+
   ########################
   # 2. PostgreSQL - Keycloak
   ########################
@@ -57,7 +58,6 @@ services:
       - "8180:8080"
     networks:
       - ged-network
-
   ########################
   # 4. MinIO - Stockage
   ########################
@@ -109,16 +109,16 @@ services:
     # 6. Kibana
     ########################
   kibana:
-      container_name: kibana
-      image: docker.elastic.co/kibana/kibana:7.17.9
-      environment:
-        - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      ports:
-        - "5601:5601"
-      depends_on:
-        - elasticsearch
-      networks:
-        - ged-network
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.17.9
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - ged-network
 
     ########################
   # 7. pgAdmin (UI PostgreSQL)
@@ -136,6 +136,18 @@ services:
       - postgres-keycloak
     networks:
       - ged-network
+  ########################
+  vault:
+    image: hashicorp/vault:1.13.3
+    container_name: vault-ged
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: root
+      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+    cap_add:
+      - IPC_LOCK
+    command: vault server -dev
 
   ########################
   # 8. Nuxeo (Optionnel)

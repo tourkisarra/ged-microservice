@@ -16,7 +16,7 @@ public class NuxeoWebClientConfig {
             @Value("${nuxeo.password}") String password) {
 
         String auth = Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
-        System.out.println("🔐 Nuxeo Basic Auth: Basic " + auth);  // Pour vérifier si c’est correct
+        System.out.println(" Nuxeo Basic Auth: Basic " + auth);  // Pour vérifier si c’est correct
 
         this.webClient = WebClient.builder()
                 .baseUrl(baseUrl)
