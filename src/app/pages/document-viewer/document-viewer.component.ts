@@ -28,18 +28,37 @@ export class DocumentViewerComponent {
   goBack(): void {
     this.router.navigate(['/document-history']); // adapte selon ta route exacte
   }
+  renameDocument() {
+  alert(' Renommer le document (fonction à implémenter)');
+}
+
+deleteDocument() {
+  const confirmed = confirm(' Êtes-vous sûr de vouloir supprimer ce document ?');
+  if (confirmed) {
+    alert('Document supprimé (simulation)');
+  }
+}
+
+openVersionHistory() {
+  this.router.navigate(['/document-history', this.document.id]);
+}
+
+shareDocument() {
+  alert(' Partage du document (simulation)');
+}
+
 
   downloadDocument(): void {
-    alert('📥 Téléchargement du document...');
+    alert(' Téléchargement du document...');
     // Ici tu peux implémenter un vrai téléchargement via blob si besoin
   }
 
   addToFavorites(): void {
-    alert('💖 Document ajouté aux favoris !');
+    alert(' Document ajouté aux favoris !');
   }
 
   signDocument(): void {
     this.document.isSigned = true;
-    alert('🖋️ Document signé électroniquement.');
+    alert(' Document signé électroniquement.');
   }
 }
